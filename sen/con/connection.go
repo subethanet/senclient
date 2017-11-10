@@ -1,8 +1,11 @@
 package con
 
-import "net"
+import (
+	"net"
+)
 
 
 type Connection struct {
 	tcpCon net.Conn
+	isMyTurn bool
 }

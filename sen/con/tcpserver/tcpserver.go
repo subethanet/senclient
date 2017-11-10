@@ -1,9 +1,9 @@
-package listener
+package tcpserver
 
 import (
 	"net"
 	"fmt"
-	"manifold/con"
+	"manifold/sen/con"
 	"strconv"
 )
 
@@ -34,7 +34,7 @@ func (server *Server) Start() {
 		fmt.Println("Error listening:", err.Error())
 		panic(err)
 	}
-	// Close the listener when the application closes.
+	// Close the tcpserver when the application closes.
 	defer l.Close()
 	for {
 		// Listen for an incoming connection.
@@ -44,6 +44,6 @@ func (server *Server) Start() {
 			panic(err)
 		}
 		// Handle connections in a new goroutine.
-		go con.HandleNewTcpConnection(conn)
+		go con.FromIncomingCon(conn)
 	}
 }
