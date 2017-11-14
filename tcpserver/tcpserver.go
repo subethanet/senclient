@@ -3,7 +3,7 @@ package tcpserver
 import (
 	"net"
 	"fmt"
-	"manifold/sen/con"
+	"senclient/con"
 	"strconv"
 )
 
@@ -15,7 +15,7 @@ import (
 
 
 type Server struct {
-	port int
+	listenPort int
 }
 
 
@@ -27,9 +27,10 @@ func Create(port int) Server {
 }
 
 
-func (server *Server) Start() {
+func (client *Server) Start() {
+	fmt.Println("Listening on tcpserver port " + strconv.Itoa(client.listenPort))
 	// Listen for incoming connections.
-	l, err := net.Listen("tcp", "0.0.0.0:"+strconv.Itoa(server.port))
+	l, err := net.Listen("tcp", "0.0.0.0:"+strconv.Itoa(client.listenPort))
 	if err != nil {
 		fmt.Println("Error listening:", err.Error())
 		panic(err)
@@ -46,4 +47,5 @@ func (server *Server) Start() {
 		// Handle connections in a new goroutine.
 		go con.FromIncomingCon(conn)
 	}
+	fmt.Println("Shouldn't get here...")
 }

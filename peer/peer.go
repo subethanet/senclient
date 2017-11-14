@@ -1,7 +1,7 @@
 package peer
 
 import (
-	"manifold/sen/con"
+	"senclient/con"
 )
 
 /*

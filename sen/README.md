@@ -1,2 +1,0 @@
-Subethanet Golang Library (sen)
-===

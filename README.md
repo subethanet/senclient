@@ -1,6 +1,9 @@
-About Manifold
+Subethanet Go Client Library (senclient)
 ===
 
-Manifold (name subject to change) is a subethanet client written in Go.
+senclient is a basic client library for the Subethanet protocol. senclient can be integrated with a high level CLI or GUI client.
 
-Bundled with Manifold is the Subethanet (sen) Go library.
+Subethanet Go Library (sen)
+===
+
+Implementation independent logic will (at some point soon) be split into a distinct sen package, for clearer code decoupling, and to encourage alternate implications to use the """official""" Subethanet protocol logic.
