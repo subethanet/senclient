@@ -1,10 +1,10 @@
 package tcpserver
 
 import (
-	"net"
 	"fmt"
-	"senclient/con"
+	"crypto/tls"
 	"strconv"
+	"net"
 )
 
 /*
@@ -16,36 +16,65 @@ import (
 
 type Server struct {
 	listenPort int
+	certificate tls.Certificate
+	connectionHandler func(conn net.Conn)
+	shutdownFlag bool
 }
 
 
-func Create(port int) Server {
+func Create(port int, cert tls.Certificate, connectionHandler func(conn net.Conn)) Server {
 	s := Server{
 		port,
+		cert,
+		connectionHandler,
+		false,
 	}
 	return s
 }
 
 
-func (client *Server) Start() {
-	fmt.Println("Listening on tcpserver port " + strconv.Itoa(client.listenPort))
-	// Listen for incoming connections.
-	l, err := net.Listen("tcp", "0.0.0.0:"+strconv.Itoa(client.listenPort))
+func (s *Server) Start() {
+	go s.run()
+}
+
+
+/*
+	Trigger a server shutdown.
+ */
+func (s *Server) Stop() {
+	fmt.Println("Triggering server shutdown.")
+	s.shutdownFlag = true
+	config := tls.Config{InsecureSkipVerify: true}
+	conn, _ := tls.Dial("tcp", "127.0.0.1:"+strconv.Itoa(s.listenPort), &config)  // Throwaway connection.
+	fmt.Println("beep")
+	conn.Close()
+}
+
+
+func (s *Server) run() {
+	fmt.Println("Starting tcp server.")
+	service := "0.0.0.0:"+strconv.Itoa(s.listenPort)
+	config := tls.Config{Certificates: []tls.Certificate{s.certificate}}
+	l, err := tls.Listen("tcp", service, &config)
 	if err != nil {
 		fmt.Println("Error listening:", err.Error())
 		panic(err)
 	}
-	// Close the tcpserver when the application closes.
-	defer l.Close()
+	defer l.Close()	 // Close the tcpserver when the application closes.
+
+	// Hang and listen for an incoming connection.
 	for {
-		// Listen for an incoming connection.
 		conn, err := l.Accept()
 		if err != nil {
 			fmt.Println("Error accepting: ", err.Error())
 			panic(err)
 		}
-		// Handle connections in a new goroutine.
-		go con.FromIncomingCon(conn)
+		go s.connectionHandler(conn)  // Handle connections in a new goroutine.
+
+		if s.shutdownFlag == true {
+			break
+		}
 	}
-	fmt.Println("Shouldn't get here...")
+
+	fmt.Println("TCP server shutdown.")
 }

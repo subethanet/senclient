@@ -10,13 +10,12 @@ import (
 */
 
 
-func FromIncomingCon(tcpCon net.Conn) Connection {
+func FromIncomingCon(tcpCon net.Conn) {
 	fmt.Println("Created incomming connection")
 	conn := Connection{
 		tcpCon:   tcpCon,
 	}
 	conn.Send("This is a temporary test auto-response.")
-	return Connection{}
 }
 
 

@@ -17,7 +17,7 @@ import (
 
 
 type Peer struct {
+	connections []con.Connection
 	listeners []con.Connection
 	speakers []con.Connection
-	// Should also track all peered Connections via the peer for a graceful de-peering.
 }
