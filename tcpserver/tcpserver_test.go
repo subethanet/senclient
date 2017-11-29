@@ -2,7 +2,7 @@ package tcpserver
 
 import (
 	"testing"
-	"senclient/con/crypt"
+	"senclient/crypt"
 	"crypto/tls"
 	"time"
 	"net"
