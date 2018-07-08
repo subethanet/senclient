@@ -6,11 +6,11 @@ import (
 )
 
 func TestStart(t *testing.T) {
-	client := Create(4546)
+	client := CreateApp(4546)
 
 	client.LoadCertAndKey(
-		"tcpserver/test/testCert.pem",
-		"tcpserver/test/testKey.key",
+		"test/testCert.pem",
+		"test/testKey.key",
 	)
 
 	client.Start()

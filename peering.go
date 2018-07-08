@@ -1,4 +1,4 @@
-package peer
+package senclient
 
 import (
 	"crypto/tls"

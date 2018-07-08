@@ -1,4 +1,4 @@
-package crypt
+package senclient
 
 import "crypto/x509"
 
