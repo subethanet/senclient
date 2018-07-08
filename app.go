@@ -5,7 +5,7 @@ import (
 	"senclient/tcpserver"
 )
 
-type client struct {
+type Client struct {
 	listeningPort int
 	server        tcpserver.Server
 	cert          tls.Certificate

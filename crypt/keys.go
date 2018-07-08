@@ -7,7 +7,6 @@ import (
 	"fmt"
 )
 
-
 func generateKeyPair(byteCount int) (*rsa.PrivateKey, *rsa.PublicKey, error) {
 	privKeyMinSize := 2048
 	if byteCount < privKeyMinSize {

@@ -2,12 +2,10 @@ package crypt
 
 import "crypto/x509"
 
-
 type CertificateChain struct {
-	clientCert x509.Certificate
+	clientCert   x509.Certificate
 	identityCert x509.Certificate
 }
-
 
 /*func encryptToCert(unencryptedSecret []byte, targetPubkey *rsa.PublicKey) ([]byte, error) {
 	encryptedSecret, err := rsa.EncryptOAEP(

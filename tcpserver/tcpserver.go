@@ -1,10 +1,10 @@
 package tcpserver
 
 import (
-	"fmt"
 	"crypto/tls"
-	"strconv"
+	"fmt"
 	"net"
+	"strconv"
 )
 
 /*
@@ -13,14 +13,12 @@ import (
 	which handles the actual subethanet protocol.
 */
 
-
 type Server struct {
-	listenPort int
-	certificate tls.Certificate
+	listenPort        int
+	certificate       tls.Certificate
 	connectionHandler func(conn net.Conn)
-	shutdownFlag bool
+	shutdownFlag      bool
 }
-
 
 func Create(port int, cert tls.Certificate, connectionHandler func(conn net.Conn)) Server {
 	s := Server{
@@ -32,35 +30,32 @@ func Create(port int, cert tls.Certificate, connectionHandler func(conn net.Conn
 	return s
 }
 
-
 func (s *Server) Start() {
 	go s.run()
 }
 
-
 /*
 	Trigger a server shutdown.
- */
+*/
 func (s *Server) Stop() {
 	fmt.Println("Triggering server shutdown.")
 	s.shutdownFlag = true
 	config := tls.Config{InsecureSkipVerify: true}
-	conn, _ := tls.Dial("tcp", "127.0.0.1:"+strconv.Itoa(s.listenPort), &config)  // Throwaway connection.
+	conn, _ := tls.Dial("tcp", "127.0.0.1:"+strconv.Itoa(s.listenPort), &config) // Throwaway connection.
 	fmt.Println("beep")
 	conn.Close()
 }
 
-
 func (s *Server) run() {
 	fmt.Println("Starting tcp server.")
-	service := "0.0.0.0:"+strconv.Itoa(s.listenPort)
+	service := "0.0.0.0:" + strconv.Itoa(s.listenPort)
 	config := tls.Config{Certificates: []tls.Certificate{s.certificate}}
 	l, err := tls.Listen("tcp", service, &config)
 	if err != nil {
 		fmt.Println("Error listening:", err.Error())
 		panic(err)
 	}
-	defer l.Close()	 // Close the tcpserver when the application closes.
+	defer l.Close() // Close the tcpserver when the application closes.
 
 	// Hang and listen for an incoming connection.
 	for {
@@ -69,7 +64,7 @@ func (s *Server) run() {
 			fmt.Println("Error accepting: ", err.Error())
 			panic(err)
 		}
-		go s.connectionHandler(conn)  // Handle connections in a new goroutine.
+		go s.connectionHandler(conn) // Handle connections in a new goroutine.
 
 		if s.shutdownFlag == true {
 			break

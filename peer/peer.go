@@ -1,8 +1,8 @@
 package peer
 
 import (
-	"senclient/con"
 	"crypto/tls"
+	"senclient/con"
 )
 
 /*
@@ -16,14 +16,11 @@ import (
 	tcp connection's 'direction'.
 */
 
-
 type peer struct {
-	idCert tls.Certificate  // Represents the ID of a person. Used to trust the clientCert.
-	clientCert tls.Certificate  // The client-specific cert used to handle encrypting connections.
+	idCert     tls.Certificate // Represents the ID of a person. Used to trust the clientCert.
+	clientCert tls.Certificate // The client-specific cert used to handle encrypting connections.
 
 	connections []con.Connection
-	listeners []con.Connection
-	speakers []con.Connection
+	listeners   []con.Connection
+	speakers    []con.Connection
 }
-
-

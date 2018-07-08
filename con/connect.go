@@ -1,11 +1,10 @@
 package con
 
 import (
+	"fmt"
 	"net"
 	"strconv"
-	"fmt"
 )
-
 
 func Connect(ip string, port int) Connection {
 	fmt.Println("Outgoing connection...")

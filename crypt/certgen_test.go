@@ -1,12 +1,11 @@
 package crypt
 
 import (
-	"testing"
-	"crypto/x509"
 	"crypto/rsa"
+	"crypto/x509"
 	"fmt"
+	"testing"
 )
-
 
 func TestNewCertificateSigningRequest(t *testing.T) {
 	csr, key, err := newCertificateSigningRequest(2048)
@@ -21,7 +20,6 @@ func TestNewCertificateSigningRequest(t *testing.T) {
 	}
 }
 
-
 func TestNewCaCertificate(t *testing.T) {
 	cert, privateKey, err := newCaCertificate(2048)
 	if err != nil {
@@ -34,7 +32,6 @@ func TestNewCaCertificate(t *testing.T) {
 		panic("Got null privateKey")
 	}
 }
-
 
 func TestNewCertificate(t *testing.T) {
 	caCert, caKey, err := newCaCertificate(2048)
@@ -55,7 +52,6 @@ func TestNewCertificate(t *testing.T) {
 		panic("cert was nil")
 	}
 }
-
 
 func TestNewCertificateWithBadInputs(t *testing.T) {
 	testKeySizes := []int{2048, 2048, 4096}

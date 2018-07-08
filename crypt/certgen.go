@@ -1,17 +1,16 @@
 package crypt
 
 import (
-	"crypto/tls"
-	"log"
-	"crypto/x509"
 	"crypto/rand"
-	"crypto/x509/pkix"
 	"crypto/rsa"
+	"crypto/tls"
+	"crypto/x509"
+	"crypto/x509/pkix"
 	"errors"
+	"log"
 	"math/big"
 	"time"
 )
-
 
 func LoadCert(certPath string, keyPath string) tls.Certificate {
 	cert, err := tls.LoadX509KeyPair(certPath, keyPath)
@@ -20,7 +19,6 @@ func LoadCert(certPath string, keyPath string) tls.Certificate {
 	}
 	return cert
 }
-
 
 func newCertificateSigningRequest(keySize int) (*x509.CertificateRequest, *rsa.PrivateKey, error) {
 	privateKey, pubKey, err := generateKeyPair(keySize)
@@ -53,21 +51,20 @@ func newCertificateSigningRequest(keySize int) (*x509.CertificateRequest, *rsa.P
 	return csr, privateKey, err
 }
 
-
 func newCaCertificate(keySize int) (*x509.Certificate, *rsa.PrivateKey, error) {
-	template := &x509.Certificate {
-		IsCA : true,
-		BasicConstraintsValid : true,
-		SubjectKeyId : []byte{1,2,3},
-		SerialNumber : big.NewInt(42),
-		Subject : pkix.Name{
-			Country : []string{"Earth"},
+	template := &x509.Certificate{
+		IsCA: true,
+		BasicConstraintsValid: true,
+		SubjectKeyId:          []byte{1, 2, 3},
+		SerialNumber:          big.NewInt(42),
+		Subject: pkix.Name{
+			Country:      []string{"Earth"},
 			Organization: []string{"Individual"},
 		},
-		NotBefore : time.Now(),
-		NotAfter : time.Now().AddDate(0,3,0),
-		ExtKeyUsage : []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth, x509.ExtKeyUsageServerAuth},
-		KeyUsage : x509.KeyUsageDigitalSignature|x509.KeyUsageCertSign,
+		NotBefore:   time.Now(),
+		NotAfter:    time.Now().AddDate(0, 3, 0),
+		ExtKeyUsage: []x509.ExtKeyUsage{x509.ExtKeyUsageClientAuth, x509.ExtKeyUsageServerAuth},
+		KeyUsage:    x509.KeyUsageDigitalSignature | x509.KeyUsageCertSign,
 	}
 
 	privateKey, pubKey, err := generateKeyPair(keySize)
@@ -88,7 +85,6 @@ func newCaCertificate(keySize int) (*x509.Certificate, *rsa.PrivateKey, error) {
 	return certObject, privateKey, err
 }
 
-
 func newCertificate(caCert *x509.Certificate, caKey *rsa.PrivateKey, csr *x509.CertificateRequest) (*x509.Certificate, error) {
 	if csr == nil || csr.Raw == nil || csr.CheckSignature() != nil {
 		return nil, errors.New("invalid certificate request passed")
@@ -99,10 +95,10 @@ func newCertificate(caCert *x509.Certificate, caKey *rsa.PrivateKey, csr *x509.C
 		Subject: pkix.Name{
 			Organization: []string{"Individual"},
 		},
-		NotBefore: time.Now(),
-		NotAfter: time.Now().Add(time.Hour*24*30),
-		KeyUsage: x509.KeyUsageKeyEncipherment | x509.KeyUsageDigitalSignature,
-		ExtKeyUsage: []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth},
+		NotBefore:             time.Now(),
+		NotAfter:              time.Now().Add(time.Hour * 24 * 30),
+		KeyUsage:              x509.KeyUsageKeyEncipherment | x509.KeyUsageDigitalSignature,
+		ExtKeyUsage:           []x509.ExtKeyUsage{x509.ExtKeyUsageServerAuth},
 		BasicConstraintsValid: true,
 		IsCA: true,
 	}
@@ -124,7 +120,6 @@ func newCertificate(caCert *x509.Certificate, caKey *rsa.PrivateKey, csr *x509.C
 
 	return certObject, err
 }
-
 
 func verifyCertChain(cert *x509.Certificate, caCert *x509.Certificate) bool {
 	caCertPool := x509.NewCertPool()

@@ -1,53 +1,46 @@
 package tcpserver
 
 import (
-	"testing"
-	"senclient/crypt"
-	"crypto/tls"
-	"time"
-	"net"
-	"fmt"
 	"bufio"
+	"crypto/tls"
+	"fmt"
+	"net"
+	"senclient/crypt"
+	"testing"
+	"time"
 )
 
-
 var testPort = 9994
-
 
 func loadTestCert() tls.Certificate {
 	return crypt.LoadCert("./test/testCert.pem", "./test/testKey.key")
 }
 
-
 func createAndStartServer() *Server {
-	time.Sleep(100*time.Millisecond)
+	time.Sleep(100 * time.Millisecond)
 	server := Create(
 		testPort,
 		loadTestCert(),
 		demoConnectionHandler,
 	)
 	server.Start()
-	time.Sleep(50*time.Millisecond)
+	time.Sleep(50 * time.Millisecond)
 	return &server
 }
-
 
 func demoConnectionHandler(conn net.Conn) {
 	fmt.Fprintf(conn, "This is a test string.\n")
 }
-
 
 func TestServerStart(t *testing.T) {
 	s := createAndStartServer()
 	s.Stop()
 }
 
-
 func TestServerStartAgain(t *testing.T) {
 	s := createAndStartServer()
 	s.Stop()
 }
-
 
 func TestServerAcceptConnection(t *testing.T) {
 	s := createAndStartServer()
@@ -60,7 +53,6 @@ func TestServerAcceptConnection(t *testing.T) {
 
 	s.Stop()
 }
-
 
 func TestServerConnectionResponse(t *testing.T) {
 	s := createAndStartServer()
