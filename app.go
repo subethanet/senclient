@@ -1,13 +1,12 @@
 package senclient
 
 import (
-	"senclient/tcpserver"
 	"crypto/tls"
+	"senclient/tcpserver"
 )
-
 
 type client struct {
 	listeningPort int
-	server tcpserver.Server
-	cert tls.Certificate
+	server        tcpserver.Server
+	cert          tls.Certificate
 }
