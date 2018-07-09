@@ -5,7 +5,7 @@ import (
 	"crypto/x509"
 )
 
-func PeerFromDeviceCert(clientCert tls.Certificate) *peer {
+func peerFromDeviceCert(clientCert tls.Certificate) *peer {
 	p := peer{
 		clientCert: clientCert,
 	}

@@ -16,14 +16,14 @@ func loadTestCert() tls.Certificate {
 	return crypt.LoadCert("./test/testCert.pem", "./test/testKey.key")
 }
 
-func createAndStartServer() *Server {
+func createAndStartServer() *server {
 	time.Sleep(100 * time.Millisecond)
-	server := Create(
+	server := newServer(
 		testPort,
 		loadTestCert(),
 		demoConnectionHandler,
 	)
-	server.Start()
+	server.start()
 	time.Sleep(50 * time.Millisecond)
 	return &server
 }
@@ -34,12 +34,12 @@ func demoConnectionHandler(conn net.Conn) {
 
 func TestServerStart(t *testing.T) {
 	s := createAndStartServer()
-	s.Stop()
+	s.stop()
 }
 
 func TestServerStartAgain(t *testing.T) {
 	s := createAndStartServer()
-	s.Stop()
+	s.stop()
 }
 
 func TestServerAcceptConnection(t *testing.T) {
@@ -51,7 +51,7 @@ func TestServerAcceptConnection(t *testing.T) {
 		panic(err)
 	}
 
-	s.Stop()
+	s.stop()
 }
 
 func TestServerConnectionResponse(t *testing.T) {
@@ -71,5 +71,5 @@ func TestServerConnectionResponse(t *testing.T) {
 		t.Fatal("Didn't get the correct test response. Got: " + msg)
 	}
 
-	s.Stop()
+	s.stop()
 }

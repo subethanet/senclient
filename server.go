@@ -7,21 +7,17 @@ import (
 	"strconv"
 )
 
-/*
-	Responsible for the Server object, which is meant to be 1 one-per-app object.
-	The Server accepts network connections and passes them along to a Connection object,
-	which handles the actual subethanet protocol.
-*/
-
-type Server struct {
+// The server accepts network connections and passes them along to a tcpConnection object,
+// which handles the actual subethanet protocol.
+type server struct {
 	listenPort        int
 	certificate       tls.Certificate
 	connectionHandler func(conn net.Conn)
 	shutdownFlag      bool
 }
 
-func Create(port int, cert tls.Certificate, connectionHandler func(conn net.Conn)) Server {
-	s := Server{
+func newServer(port int, cert tls.Certificate, connectionHandler func(conn net.Conn)) server {
+	s := server{
 		port,
 		cert,
 		connectionHandler,
@@ -30,26 +26,16 @@ func Create(port int, cert tls.Certificate, connectionHandler func(conn net.Conn
 	return s
 }
 
-func (s *Server) Start() {
-	go s.run()
+// start the server using a goroutine.
+func (s *server) start() {
+	go s.startSynchronous()
 }
 
-/*
-	Trigger a server shutdown.
-*/
-func (s *Server) Stop() {
-	fmt.Println("Triggering server shutdown.")
-	s.shutdownFlag = true
-	config := tls.Config{InsecureSkipVerify: true}
-	conn, _ := tls.Dial("tcp", "127.0.0.1:"+strconv.Itoa(s.listenPort), &config) // Throwaway connection.
-	fmt.Println("beep")
-	conn.Close()
-}
-
-func (s *Server) run() {
+func (s *server) startSynchronous() {
 	fmt.Println("Starting tcp server.")
 	service := "0.0.0.0:" + strconv.Itoa(s.listenPort)
 	config := tls.Config{Certificates: []tls.Certificate{s.certificate}}
+
 	l, err := tls.Listen("tcp", service, &config)
 	if err != nil {
 		fmt.Println("Error listening:", err.Error())
@@ -72,4 +58,13 @@ func (s *Server) run() {
 	}
 
 	fmt.Println("TCP server shutdown.")
+}
+
+// Trigger a server shutdown.
+func (s *server) stop() {
+	fmt.Println("Triggering server shutdown.")
+	s.shutdownFlag = true
+	config := tls.Config{InsecureSkipVerify: true}
+	conn, _ := tls.Dial("tcp", "127.0.0.1:"+strconv.Itoa(s.listenPort), &config) // Throwaway connection.
+	conn.Close()
 }

@@ -6,19 +6,19 @@ import (
 )
 
 /*
-	Functions for creating Connection objects (which can vary by context).
+	Functions for creating tcpConnection objects (which can vary by context).
 */
 
 func FromIncomingCon(tcpCon net.Conn) {
 	fmt.Println("Created incomming connection")
-	conn := Connection{
+	conn := tcpConnection{
 		tcpCon: tcpCon,
 	}
-	conn.Send("This is a temporary test auto-response.")
+	conn.send("This is a temporary test auto-response.")
 }
 
-func FromOutgoingCon(tcpCon net.Conn) Connection {
-	return Connection{
+func FromOutgoingCon(tcpCon net.Conn) tcpConnection {
+	return tcpConnection{
 		tcpCon: tcpCon,
 	}
 }

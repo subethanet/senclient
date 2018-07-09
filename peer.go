@@ -19,7 +19,7 @@ type peer struct {
 	idCert     tls.Certificate // Represents the ID of a person. Used to trust the clientCert.
 	clientCert tls.Certificate // The client-specific cert used to handle encrypting connections.
 
-	connections []Connection
-	listeners   []Connection
-	speakers    []Connection
+	connections []tcpConnection
+	listeners   []tcpConnection
+	speakers    []tcpConnection
 }
