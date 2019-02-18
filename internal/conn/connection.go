@@ -1,4 +1,4 @@
-package senclient
+package conn
 
 import (
 	"bufio"
@@ -7,11 +7,11 @@ import (
 	"strconv"
 )
 
-type tcpConnection struct {
+type TcpConnection struct {
 	tcpCon net.Conn
 }
 
-func newTcpConnection(ip string, port int) tcpConnection {
+func newTcpConnection(ip string, port int) TcpConnection {
 	fmt.Println("Outgoing connection...")
 	tcpCon, err := net.Dial("tcp", ip+":"+strconv.Itoa(port))
 	if err != nil {
@@ -21,7 +21,7 @@ func newTcpConnection(ip string, port int) tcpConnection {
 	return conn
 }
 
-func (conn *tcpConnection) listen() string {
+func (conn *TcpConnection) listen() string {
 	msg, err := bufio.NewReader(conn.tcpCon).ReadString('\n')
 	if err != nil {
 		panic(err)
@@ -30,7 +30,7 @@ func (conn *tcpConnection) listen() string {
 	return msg
 }
 
-func (conn *tcpConnection) send(msg string) {
+func (conn *TcpConnection) send(msg string) {
 	fmt.Fprintf(conn.tcpCon, msg+"\n")
 	fmt.Println("Sent msg:" + msg)
 }

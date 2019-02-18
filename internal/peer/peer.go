@@ -1,7 +1,8 @@
-package senclient
+package peer
 
 import (
 	"crypto/tls"
+	"github.com/subethanet/senclient/internal/conn"
 )
 
 /*
@@ -19,7 +20,7 @@ type peer struct {
 	idCert     tls.Certificate // Represents the ID of a person. Used to trust the clientCert.
 	clientCert tls.Certificate // The client-specific cert used to handle encrypting connections.
 
-	connections []tcpConnection
-	listeners   []tcpConnection
-	speakers    []tcpConnection
+	connections []conn.TcpConnection
+	listeners   []conn.TcpConnection
+	speakers    []conn.TcpConnection
 }

@@ -1,4 +1,4 @@
-package senclient
+package conn
 
 import (
 	"fmt"
@@ -6,19 +6,19 @@ import (
 )
 
 /*
-	Functions for creating tcpConnection objects (which can vary by context).
+	Functions for creating TcpConnection objects (which can vary by context).
 */
 
 func FromIncomingCon(tcpCon net.Conn) {
 	fmt.Println("Created incomming connection")
-	conn := tcpConnection{
+	conn := TcpConnection{
 		tcpCon: tcpCon,
 	}
 	conn.send("This is a temporary test auto-response.")
 }
 
-func FromOutgoingCon(tcpCon net.Conn) tcpConnection {
-	return tcpConnection{
+func FromOutgoingCon(tcpCon net.Conn) TcpConnection {
+	return TcpConnection{
 		tcpCon: tcpCon,
 	}
 }
