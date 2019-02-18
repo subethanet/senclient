@@ -2,6 +2,7 @@ package senclient
 
 import (
 	"crypto/tls"
+	"github.com/subethanet/senclient/internal/crypto"
 )
 
 type Client struct {
@@ -19,7 +20,7 @@ func CreateApp(port int) Client {
 
 // Load the Client's certificate and key.
 func (app *Client) LoadCertAndKey(certPath string, keyPath string) {
-	app.cert = loadCert(certPath, keyPath)
+	app.cert = crypto.LoadCert(certPath, keyPath)
 }
 
 // Run the senclient app (once everything has been set up).

@@ -1,4 +1,4 @@
-package senclient
+package crypto
 
 import (
 	"crypto/rand"
@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-func loadCert(certPath string, keyPath string) tls.Certificate {
+func LoadCert(certPath string, keyPath string) tls.Certificate {
 	cert, err := tls.LoadX509KeyPair(certPath, keyPath)
 	if err != nil {
 		log.Fatalf("server: loadkeys: %s", err)

@@ -4,8 +4,8 @@ import (
 	"bufio"
 	"crypto/tls"
 	"fmt"
+	"github.com/subethanet/senclient/internal/crypto"
 	"net"
-	"senclient/crypt"
 	"testing"
 	"time"
 )
@@ -13,7 +13,7 @@ import (
 var testPort = 9994
 
 func loadTestCert() tls.Certificate {
-	return crypt.LoadCert("./test/testCert.pem", "./test/testKey.key")
+	return crypto.LoadCert("./test/testCert.pem", "./test/testKey.key")
 }
 
 func createAndStartServer() *server {

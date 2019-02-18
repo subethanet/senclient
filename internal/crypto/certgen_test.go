@@ -1,4 +1,4 @@
-package senclient
+package crypto
 
 import (
 	"crypto/rsa"
