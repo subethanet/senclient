@@ -17,6 +17,7 @@ Clients maintain a "fan" of peers with various IDs, with a bias to IDs that are 
 When a client receives a message as a carrier (IE it isn't the destination), it checks which one of its peers is "closer". The "asymptotically close" peers are critical here, as they provide a (weak) guarantee of structure in the network. Any client should be able to pass "left" or "right" without "overshooting" the target ID. 
 
 # Communication lifecycle
+Refer to PROTOCOL.md for more up-to-date information of SEN commands and flow.
 
 Alice wants to send a message to Bob.
 
